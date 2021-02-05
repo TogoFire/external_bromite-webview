@@ -1,0 +1,68 @@
+Building the Chromium-based WebView in AOSP is no longer supported or required.
+WebView can now be built entirely from the Chromium source code.
+
+Docs on how to build WebView from Chromium for use in AOSP are available here:
+https://chromium.googlesource.com/chromium/src/+/HEAD/android_webview/docs/aosp-system-integration.md
+
+For questions about building WebView, please contact our mailing list:
+https://groups.google.com/a/chromium.org/forum/#!forum/android-webview-dev
+
+---
+
+The prebuilt APKs provided here are built from Chromium upstream sources; you
+should check the commit message to see the version number for a particular
+prebuilt. The version number is formatted like "12.0.3456.789" and matches the
+tag in the Chromium repository it was built from.
+
+If you want to build your own WebView, you should generally build the latest
+stable version, not the version published here: newer versions have important
+security and stability improvements.
+
+
+General instructions for building WebView from Chromium:
+https://www.chromium.org/developers/how-tos/build-instructions-android-webview
+
+------
+
+The prebuilt libwebviewchromium.so included in these APKs is built from Chromium
+release, using the GN build tool. To match our build settings, set:
+
+target_os = "android"
+is_debug = false
+is_official_build = true
+is_chrome_branded = false
+use_official_google_api_keys = false
+ffmpeg_branding = "Chrome"
+proprietary_codecs = true
+enable_resource_whitelist_generation = false
+enable_remoting = true
+is_component_build = false
+symbol_level = 0
+enable_nacl = false
+blink_symbol_level = 0
+webview_devui_show_icon = false
+android_default_version_name = "84.0.4147.89"
+android_default_version_code = "4147089$$"
+
+$$ depends on device ARCH
+(00=arm, 50=arm64, 10=x86, 60=x64)
+
+in your GN argument file before building.
+
+------
+
+Replace webview icon:
+
+From the chromium/src directory:
+
+mkdir -p android_webview/apk/java/res/drawable-xxxhdpi
+cp chrome/android/java/res_chromium/mipmap-mdpi/app_icon.png android_webview/apk/java/res/drawable-mdpi/icon_webview.png
+cp chrome/android/java/res_chromium/mipmap-hdpi/app_icon.png android_webview/apk/java/res/drawable-hdpi/icon_webview.png
+cp chrome/android/java/res_chromium/mipmap-xhdpi/app_icon.png android_webview/apk/java/res/drawable-xhdpi/icon_webview.png
+cp chrome/android/java/res_chromium/mipmap-xxhdpi/app_icon.png android_webview/apk/java/res/drawable-xxhdpi/icon_webview.png
+cp chrome/android/java/res_chromium/mipmap-xxxhdpi/app_icon.png android_webview/apk/java/res/drawable-xxxhdpi/icon_webview.png
+
+------
+
+For questions about building WebView, please see
+https://groups.google.com/a/chromium.org/forum/#!forum/android-webview-dev
